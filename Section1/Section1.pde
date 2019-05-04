@@ -1,5 +1,3 @@
-int MAX_VALUE = 100;
-int MIN_VALUE = -100;
 Visualizer v;
 
 /*You are simulating a visualizer of multiple values
@@ -7,8 +5,13 @@ Visualizer v;
  Then you can make a method that changes the values each time the update is called. 
  */
 class Visualizer {
+  int MAX_VALUE;
+  int MIN_VALUE;
   float x, y;
   float fixedX, fixedY;
+  int width;
+  int height;
+  int bars;
   float [] values;
   float [] speeds;
   Visualizer(float x, float y) {
@@ -16,8 +19,13 @@ class Visualizer {
     this.y = y;
     fixedX = x;
     fixedY = y;
-    values = new float[10];
-    speeds = new float[10];
+    width = 400;
+    height = 200;
+    MAX_VALUE = height/2;
+    MIN_VALUE = MAX_VALUE*-1;
+    bars = (int)random(1,40);
+    values = new float[bars];
+    speeds = new float[bars];
     for (int i = 0; i < values.length; i++) {
       values[i] = random(-99, 99);
       speeds[i] = random(2);
@@ -29,26 +37,22 @@ class Visualizer {
     y = fixedY;
     fill(255);
     rectMode(CORNERS);
-    rect(x, y, x+400, y+200);
-    //This is a 200x400 box.
-    //The width of the visualizer is 400! This rect is the border
+    rect(x, y, x+width, y+height);
 
-    //the line is the 0 y-value, the top is 100, the bottom is -100
-    line(x, y+100, x+400, y+100);
-
-    //You need to use a loop. You need to make the HEIGHT of the bars 
-    //the values in the array.
-    //Negative values are red, and go below the line.
-    //Positive values are green and go above the line.
+    line(x, y+height/2, x+width, y+height/2);
 
     for (float value: values){
-      if (value < 0){ //if value is negative, it goes up in the compSciPlane
-        fill(0,128,0);
-      } else { //in processing, negative y goes up, positive y goes down
-        fill(255,0,0);
+      if (value < -1*height/4){ //if value is negative, it goes up in the compSciPlane
+        fill(0,128,0); //green
+      } else if (value >= height/4){ //in processing, negative y goes up, positive y goes down
+        fill(255,0,0); //red
+      } else if (value < 0 && value >= -1*height/4){
+        fill(255,255,0); //
+      } else if (value >= 0 && value < height/4){
+        fill(255,165,0);
       }
-      rect(x,y+100,x+400/10,y+100+value);
-      x+= 400/10;
+      rect(x,y+height/2,x+width/bars,y+height/2+value);
+      x+= width/bars;
     }
   }
   
@@ -64,7 +68,7 @@ class Visualizer {
 
 void setup() {
   size(600, 500);
-  v = new Visualizer(20, 20);
+  v = new Visualizer(50, 50);
 }
 void draw() {
   background(255);
