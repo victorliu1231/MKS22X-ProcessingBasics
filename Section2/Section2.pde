@@ -18,10 +18,10 @@ void setup() {
  R is right vertex
  */
 void gasket(int levels, float Lx, float Ly, float Rx, float Ry, float Tx, float Ty) {
-  if (levels == 0){
+  if (levels <= 0) {
     return;
   }
-  fill(255,0,0);
+  fill(255, 0, 0);
   triangle(Lx, Ly, Tx, Ty, Rx, Ry);
   fill(255);
   float NewLx = (Lx + Tx)/2;
@@ -30,22 +30,21 @@ void gasket(int levels, float Lx, float Ly, float Rx, float Ry, float Tx, float 
   float NewRy = (Ry + Ty)/2;
   float NewTx = (Lx + Rx)/2;
   float NewTy = (Ly + Ry)/2;
-  triangle(NewLx, NewLy,
-           NewRx, NewRy,
-           NewTx, NewTy);
+  triangle(NewLx, NewLy, 
+    NewRx, NewRy, 
+    NewTx, NewTy);
   //left triangle
   gasket(levels-1, Lx, Ly, //left corner stays same
-                   NewTx, NewTy, //right corner
-                   NewLx, NewLy); //top corner
+    NewTx, NewTy, //right corner
+    NewLx, NewLy); //top corner
   //right triangle
   gasket(levels-1, NewTx, NewTy, //left corner
-                   Rx, Ry, //right corner stays same
-                   NewRx, NewRy); //top corner
+    Rx, Ry, //right corner stays same
+    NewRx, NewRy); //top corner
   //top triangle
   gasket(levels-1, NewLx, NewLy, //left corner
-                   NewRx, NewRy, //right corner
-                   Tx, Ty); //top corner stays same
-                   
+    NewRx, NewRy, //right corner
+    Tx, Ty); //top corner stays same
 }
 
 void draw() { 
@@ -65,5 +64,7 @@ void mouseClicked() {
 }
 
 void keyPressed() {
-  levels --;
+  if (levels > 0) {
+    levels --;
+  }
 }
